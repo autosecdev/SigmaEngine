@@ -1,5 +1,7 @@
 package sigma
 
+import "reflect"
+
 // Event is a struct that contains information about the event
 type Event struct {
 	// Image is the image that is being run
@@ -10,3 +12,10 @@ type Event struct {
 	ParentImage string
 }
 
+// CheckEventFieldName checks if the field name exists in the Event struct
+func (event *Event) CheckEventFieldName(fieldName string) bool {
+
+	_, ok := reflect.TypeOf(event).FieldByName(fieldName)
+
+	return ok
+}
