@@ -24,11 +24,9 @@ func TestGetRule(t *testing.T) {
 
 	for _, rule := range rules {
 
-		fmt.Println(rule.Detection["condition"])
-		delete(rule.Detection, "condition")
-		for _, v := range rule.Detection {
+		for k, v := range Extract(rule.Detection) {
 
-			Match(v)
+			Match(v, k)
 		}
 	}
 }
@@ -42,32 +40,35 @@ func Extract(detection map[string]interface{}) map[string]interface{} {
 	}
 	return tx
 }
-
-func Match(detection interface{})  {
-
-	switch actual := detection.(type) {
-	case map[string]map[string]interface{}:
-		for _, v := range actual {
-			Match(v)
-		}
-	case map[string][]string:
-		for _, v := range actual {
-			Match(v)
-		}
-	case []string:
-		for _, v := range actual {
-			Match(v)
-		}
-	case string:
-		fmt.Println(actual)
-	default:
-		fmt.Println("Unknown type:",actual)
+func Match(detection interface{}, key string) {
+	// Split the key only if it contains an operation modifier
+	field := key
+	operation := ""
+	// maybe the key is more |,example: process.command|contains|all or selection_base64|process.command|contains|all
+	if strings.Contains(key, "|") {
+		parts := strings.Split(key, "|")
+		field = parts[0]
+		operation = parts[1]
 	}
 
-
+	switch actual := detection.(type) {
+	case map[string]interface{}:
+		for k, v := range actual {
+			fullKey := field + "|" + k
+			Match(v, fullKey)
+		}
+	case []interface{}:
+		for _, v := range actual {
+			Match(v, key)
+		}
+	case string:
+		fmt.Printf("Match found for field '%s' with operation '%s' on value '%s'\n", field, operation, actual)
+	default:
+		fmt.Printf("Unknown type: %T\n", actual)
+	}
 }
 
-func TestConvert(t *testing.T)  {
+func TestConvert(t *testing.T) {
 
 	data := utils.ReadFile("/Users/fate/go/GoCode/SigmaEngine/test/data.json")
 
@@ -97,7 +98,7 @@ func TestConvert(t *testing.T)  {
 		return
 	}
 
-	argsList,err := utils.ToStringSlice(args)
+	argsList, err := utils.ToStringSlice(args)
 
 	if err != nil {
 		fmt.Println(err)
