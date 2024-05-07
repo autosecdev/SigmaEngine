@@ -15,7 +15,13 @@ type Event struct {
 // CheckEventFieldName checks if the field name exists in the Event struct
 func (event *Event) CheckEventFieldName(fieldName string) bool {
 
-	_, ok := reflect.TypeOf(event).FieldByName(fieldName)
+	_, ok := reflect.TypeOf(event).Elem().FieldByName(fieldName)
 
 	return ok
+}
+
+// FieldByName returns the value of the field name in the Event struct
+func (event *Event) FieldByName(fieldName string) string {
+
+	return reflect.ValueOf(event).Elem().FieldByName(fieldName).String()
 }
