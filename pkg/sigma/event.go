@@ -10,6 +10,10 @@ type Event struct {
 	CommandLine string
 	// ParentImage is the parent image of the image that is being run
 	ParentImage string
+	// Matched is a boolean that indicates if the event matched the rule
+	Matched bool
+	// RuleTitle is the title of the rule that was matched
+	RuleTitle string
 }
 
 // CheckEventFieldName checks if the field name exists in the Event struct
