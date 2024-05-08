@@ -1,0 +1,110 @@
+{
+  "cloud": {
+    "instance": {
+      "id": "i-09ba1f9ba8a49ecb1",
+      "name": "ip-10-9-0-83.ap-northeast-1.compute.internal"
+    },
+    "service": {
+      "name": "Nova"
+    },
+    "machine": {
+      "type": "t2.micro"
+    },
+    "provider": "openstack",
+    "availability_zone": "ap-northeast-1a"
+  },
+  "message": "Process polkitd (PID: 513) by user polkitd is RUNNING",
+  "event": {
+    "type": [
+      "info"
+    ],
+    "category": [
+      "process"
+    ],
+    "id": "4b661815-3c13-4bc8-8e85-317178aacf0d",
+    "module": "system",
+    "dataset": "process",
+    "action": "existing_process",
+    "kind": "state"
+  },
+  "@timestamp": "2024-04-10T15:34:34.232Z",
+  "ecs": {
+    "version": "8.0.0"
+  },
+  "host": {
+    "architecture": "x86_64",
+    "containerized": false,
+    "hostname": "ops-coredb-10.9.0.83.x.com",
+    "id": "e887fc2c7f8279b206b7f75ba0a2b0bd",
+    "mac": [
+      "06-7A-A3-B4-56-D5"
+    ],
+    "name": "ops-coredb-10.9.0.83.x.com",
+    "os": {
+      "kernel": "3.10.0-1160.76.1.el7.x86_64",
+      "version": "7 (Core)",
+      "platform": "centos",
+      "name": "CentOS Linux",
+      "family": "redhat",
+      "codename": "Core",
+      "type": "linux"
+    },
+    "ip": [
+      "10.9.0.83",
+      "fe80::47a:a3ff:feb4:56d5"
+    ]
+  },
+  "process": {
+    "parent": {
+      "pid": 1
+    },
+    "executable": "/usr/lib/polkit-1/polkitd",
+    "pid": 513,
+    "working_directory": "/",
+    "name": "polkitd",
+    "entity_id": "ZVAzb6YU2q1zL0Ra",
+    "args": [
+      "/usr/lib/polkit-1/polkitd",
+      "--no-debug"
+    ],
+    "start": "2024-01-12T08:47:33.560Z",
+    "hash": {
+      "sha1": "373b91a783abbb9480e242894d77b41dfdbca7dc"
+    }
+  },
+  "@version": "1",
+  "service": {
+    "type": "system"
+  },
+  "user": {
+    "id": "999",
+    "name": "polkitd",
+    "saved": {
+      "id": "999",
+      "group": {
+        "id": "998"
+      }
+    },
+    "group": {
+      "id": "998",
+      "name": "polkitd"
+    },
+    "effective": {
+      "id": "999",
+      "group": {
+        "id": "998"
+      }
+    }
+  },
+  "agent": {
+    "id": "f7ff63e9-67bd-4093-bef8-b6cdcc74a651",
+    "name": "ops-coredb-10.9.0.83.x.com",
+    "version": "8.12.2",
+    "ephemeral_id": "d8273a89-835c-4a18-af6c-b8c4607badc9",
+    "type": "auditbeat"
+  },
+  "tags": [
+    "beats_input_codec_plain_applied",
+    "_grokparsefailure"
+  ]
+}
