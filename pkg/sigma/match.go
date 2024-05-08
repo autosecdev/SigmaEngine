@@ -72,11 +72,13 @@ func Operation(attr,operation,value string,event Event) bool {
 		return false
 	}
 
-	return false
+	ok := StrategyFactory(operation).Execute(event.FieldByName(attr),value)
+
+	return ok
 }
 
-func Match(detection interface{}, key string) {
-	event := Event{}
+// Match the event
+func Match(detection interface{}, key string, event *Event) {
 	// Split the key only if it contains an operation modifier
 	field := key
 	operation := ""
@@ -98,15 +100,17 @@ func Match(detection interface{}, key string) {
 	case map[string]interface{}:
 		for k, v := range actual {
 			fullKey := field + "|" + k
-			Match(v, fullKey)
+			Match(v, fullKey, event)
 		}
 	case []interface{}:
 		for _, v := range actual {
-			Match(v, key)
+			Match(v, key, event)
 		}
 	case string:
-		
 		fmt.Printf("Match found for field '%s' with operation '%s' at attr is '%s' on value '%s'\n", field, operation, attr, actual)
+		if Operation(attr,operation,actual,*event) {
+			fmt.Println("Matched!!!!","\t ", field)
+		}
 	default:
 		fmt.Printf("Unknown type: %T\n", actual)
 	}
