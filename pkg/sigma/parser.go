@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// GetRuleList returns a list of paths to Sigma rules
-func GetRuleList(config config.SigmaConfig) (ruleList []Rule, err error) {
+// LoadRuleAsList returns a list of paths to Sigma rules
+func LoadRuleAsList(config config.SigmaConfig) (ruleList []Rule, err error) {
 
 	err = filepath.Walk(config.RuleDir, func(
 		path string,

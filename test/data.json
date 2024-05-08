@@ -34,12 +34,12 @@
   "host": {
     "architecture": "x86_64",
     "containerized": false,
-    "hostname": "ops-coredb-10.9.0.83.coincall.com",
+    "hostname": "ops-coredb-10.9.0.83.x.com",
     "id": "e887fc2c7f8279b206b7f75ba0a2b0bd",
     "mac": [
       "06-7A-A3-B4-56-D5"
     ],
-    "name": "ops-coredb-10.9.0.83.coincall.com",
+    "name": "ops-coredb-10.9.0.83.x.com",
     "os": {
       "kernel": "3.10.0-1160.76.1.el7.x86_64",
       "version": "7 (Core)",
@@ -98,7 +98,7 @@
   },
   "agent": {
     "id": "f7ff63e9-67bd-4093-bef8-b6cdcc74a651",
-    "name": "ops-coredb-10.9.0.83.coincall.com",
+    "name": "ops-coredb-10.9.0.83.x.com",
     "version": "8.12.2",
     "ephemeral_id": "d8273a89-835c-4a18-af6c-b8c4607badc9",
     "type": "auditbeat"

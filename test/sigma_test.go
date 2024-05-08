@@ -10,12 +10,12 @@ import (
 	"testing"
 )
 
-func TestGetRule(t *testing.T) {
+func MathTest(event sigma.Event) {
 
 	sigmaConfig := config.SigmaConfig{
 		RuleDir: "/Users/fate/Downloads/sigma_all_rules/rules/linux/process_creation/",
 	}
-	rules, err := sigma.GetRuleList(sigmaConfig)
+	rules, err := sigma.LoadRuleAsList(sigmaConfig)
 
 	if err != nil {
 		fmt.Println(err)
@@ -23,10 +23,16 @@ func TestGetRule(t *testing.T) {
 	}
 
 	for _, rule := range rules {
-		fmt.Println("condition:\t", rule.Detection["condition"])
-		for k, v := range sigma.Extract(rule.Detection) {
 
-			sigma.Match(v, k)
+		for k, v := range rule.Extract() {
+
+			rule.Match(v, k,&event)
+
+			if event.Matched {
+				event.RuleTitle = rule.Title
+				fmt.Println("匹配到规则：", event)
+				return
+			}
 		}
 	}
 }
@@ -71,4 +77,5 @@ func TestConvert(t *testing.T) {
 	event.CommandLine = strings.Join(argsList, " ")
 
 	fmt.Println(event)
+	MathTest(event)
 }

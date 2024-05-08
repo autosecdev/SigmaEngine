@@ -1,7 +1,6 @@
 package sigma
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -54,16 +53,6 @@ func (s *StartsWithStrategy) Execute(text string, subtext string) bool {
 	return strings.HasPrefix(text, subtext)
 }
 
-func Extract(detection map[string]interface{}) map[string]interface{} {
-	tx := make(map[string]interface{})
-	for k, v := range detection {
-		if k != "condition" {
-			tx[k] = v
-		}
-	}
-	return tx
-}
-
 // Operation Operational data of event
 func Operation(attr,operation,value string,event Event) bool {
 
@@ -72,46 +61,15 @@ func Operation(attr,operation,value string,event Event) bool {
 		return false
 	}
 
-	ok := StrategyFactory(operation).Execute(event.FieldByName(attr),value)
+	strategy := StrategyFactory(operation)
+
+	if strategy == nil {
+
+		return false
+	}
+	ok := strategy.Execute(event.FieldByName(attr),value)
 
 	return ok
 }
 
-// Match the event
-func Match(detection interface{}, key string, event *Event) {
-	// Split the key only if it contains an operation modifier
-	field := key
-	operation := ""
-	attr := ""
-	// maybe the key is more |,example: process.command|contains|all or selection_base64|process.command|contains|all
-	if strings.Contains(key, "|") {
-		parts := strings.Split(key, "|")
-		field = parts[0]
-		if len(parts) > 2 && event.CheckEventFieldName(parts[1]) {
-			operation = parts[2]
-			attr = parts[1]
-		} else {
-			operation = parts[1]
-			attr = parts[0]
-		}
-	}
 
-	switch actual := detection.(type) {
-	case map[string]interface{}:
-		for k, v := range actual {
-			fullKey := field + "|" + k
-			Match(v, fullKey, event)
-		}
-	case []interface{}:
-		for _, v := range actual {
-			Match(v, key, event)
-		}
-	case string:
-		fmt.Printf("Match found for field '%s' with operation '%s' at attr is '%s' on value '%s'\n", field, operation, attr, actual)
-		if Operation(attr,operation,actual,*event) {
-			fmt.Println("Matched!!!!","\t ", field)
-		}
-	default:
-		fmt.Printf("Unknown type: %T\n", actual)
-	}
-}
